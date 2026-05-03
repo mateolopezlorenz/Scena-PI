@@ -1,0 +1,23 @@
+<div class="container-fluid p-0">
+
+    <h1>Login de usuarios</h1>
+
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="form">
+        <label for="email">Correo electrónico:</label>
+        <input type="email" name="email" id="email" [(ngModel)]="loginData.email" #emailField="ngModel" required email>
+        <div *ngIf="emailField.invalid && emailField.touched" class="error-msg">
+            <span *ngIf="emailField.errors?.['required']">El email es obligatorio.</span>
+            <span *ngIf="emailField.errors?.['email']">Introduce un email válido.</span>
+        </div>
+
+        <label for="password">Contraseña:</label>
+        <input type="password" name="password" id="password" [(ngModel)]="loginData.password" #passField="ngModel" required>
+        <div *ngIf="passField.invalid && passField.touched" class="error-msg">
+            <span>La contraseña es obligatoria.</span>
+        </div>
+
+        <button type="submit" [disabled]="!loginForm.valid">Iniciar sesión</button>
+    </form>
+    <p>¿No tienes cuenta?<a routerLink="/register">Crear cuenta.</a></p>
+
+</div>

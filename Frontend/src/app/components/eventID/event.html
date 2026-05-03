@@ -1,0 +1,101 @@
+<div *ngIf="event && !usuarioEditando && !usuarioEliminando" class="event-detail">
+  <h2>{{ event.name }}</h2>
+
+  <div class="event-detail-info">
+    <p><strong>Descripción:</strong> {{ event.description }}</p>
+    <p><strong>Categoría:</strong> <span class="badge-category badge-{{ event.category }}">{{ event.category }}</span></p>
+    <p><strong>Fecha Inicio:</strong> {{ event.startDate }}</p>
+    <p><strong>Fecha Fin:</strong> {{ event.endDate }}</p>
+    <p><strong>Dirección:</strong> {{ event.address }}</p>
+    <p *ngIf="event.local"><strong>Local:</strong> {{ event.local.name }}</p>
+    <p><strong>Usuario:</strong> {{ event.user?.name }}</p>
+  </div>
+
+  <div *ngIf="event.latitude && event.longitude" style="width:100%;height:400px;margin:15px 0;">
+    <div id="event-map" style="width:100%;height:100%;"></div>
+  </div>
+
+  <div class="event-detail-actions">
+    <button *ngIf="isLoggedIn" (click)="toggleLike()" class="like-btn" [class.liked]="liked">
+      {{ liked ? '&#10084; Ja no m\'agrada' : '&#9825; M\'agrada' }}
+    </button>
+    <button *ngIf="!isLoggedIn" (click)="toggleLike()" class="like-btn">
+      &#9829; +MG ({{ guestLikeCount }})
+    </button>
+
+    <button *ngIf="esCreador()" (click)="showEditForm()" class="btn-details">Editar</button>
+    <button *ngIf="esCreador()" (click)="showDeleteConfirmation()" class="btn-delete">Eliminar</button>
+  </div>
+</div>
+
+<div *ngIf="usuarioEliminando" class="event-delete-confirm">
+  <h3>Confirmar la eliminación del evento</h3>
+  <p>Escribe el nombre del evento para confirmar:</p>
+  <input type="text" [(ngModel)]="conformacionEliminar" placeholder="Nombre del evento"/>
+  <div class="event-detail-actions" style="margin-top: 10px;">
+    <button (click)="confirmDelete()" class="btn-delete">Eliminar</button>
+    <button (click)="cancelDelete()" class="btn-details">Cancelar</button>
+  </div>
+</div>
+
+<div *ngIf="event && usuarioEditando" class="event-edit-form">
+  <h2>Editar Evento</h2>
+  
+  <form class="form">
+    <label>Nombre del evento:</label>
+    <input type="text" [(ngModel)]="editedEvent.name" name="name" required/>
+
+    <label>Descripción:</label>
+    <input type="text" [(ngModel)]="editedEvent.description" name="description"/>
+
+    <label>Categoría:</label>
+    <select [(ngModel)]="editedEvent.category" name="category" required>
+      <option value="">Selecciona una categoría</option>
+      <option value="MUSICA">Música</option>
+      <option value="ESPORT">Esport</option>
+      <option value="CULTURA">Cultura</option>
+      <option value="ALTRES">Altres</option>
+    </select>
+
+    <label>Fecha de Inicio:</label>
+    <input type="datetime-local" [(ngModel)]="editedEvent.startDate" name="startDate" required/>
+
+    <label>Fecha de Fin:</label>
+    <input type="datetime-local" [(ngModel)]="editedEvent.endDate" name="endDate" required/>
+
+    <label>Asociar a un Local (opcional):</label>
+    <select [(ngModel)]="editedEvent.localId" name="localId" (change)="onEditLocalSelected()">
+      <option [ngValue]="-1">-- Sin local --</option>
+      <option *ngFor="let local of locals" [ngValue]="local.id">{{ local.name }} - {{ local.ubication }}</option>
+    </select>
+
+    <label>Latitud:</label>
+    <input type="number" [(ngModel)]="editedEvent.latitude" name="latitude" min="-90" max="90" step="0.0001" required/>
+
+    <label>Longitud:</label>
+    <input type="number" [(ngModel)]="editedEvent.longitude" name="longitude" min="-180" max="180" step="0.0001" required/>
+
+    <button type="button" (click)="showEditMapSelector = !showEditMapSelector">
+      {{ showEditMapSelector ? 'Ocultar Mapa' : 'Seleccionar en Mapa' }}
+    </button>
+
+    <div *ngIf="showEditMapSelector" style="width:100%;height:400px;margin:15px 0;border:1px solid #333;">
+      <app-map-view (coordinatesSelected)="onEditCoordinatesSelected($event)"></app-map-view>
+    </div>
+
+    <label>Dirección:</label>
+    <input type="text" [(ngModel)]="editedEvent.address" name="address" required/>
+
+    <div class="event-detail-actions">
+      <button type="button" (click)="saveChanges()" class="btn-details">Guardar Cambios</button>
+      <button type="button" (click)="cancelEdit()">Cancelar</button>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="!event && !usuarioEditando && !usuarioEliminando" class="spinner-overlay">
+  <div>
+    <div class="spinner-scena"></div>
+    <p style="color:#C0C0C0; font-size:0.9rem; margin-top:0.5rem">Cargando evento...</p>
+  </div>
+</div>

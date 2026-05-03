@@ -1,0 +1,49 @@
+<div class="container-fluid p-0">
+  <h1>Lista de Locales</h1>
+
+  <div *ngFor="let local of locals" class="local-card">
+
+    <div *ngIf="editingLocalId !== local.id">
+      <h2>{{ local.name }}</h2>
+      <p><strong>Ubicación:</strong> {{ local.ubication }}</p>
+      <p><strong>Coordenadas:</strong> {{ local.latitude }}, {{ local.longitude }}</p>
+      <p><strong>Capacidad:</strong> {{ local.capacity }}</p>
+      <p><strong>Salas:</strong> {{ local.rooms }}</p>
+      <div class="local-actions" *ngIf="isLoggedIn">
+        <button (click)="startEdit(local)">Editar</button>
+        <button class="btn-delete" (click)="deleteLocal(local.id)">Eliminar</button>
+      </div>
+    </div>
+
+    <div *ngIf="editingLocalId === local.id" class="edit-form">
+      <h3>Editando: {{ local.name }}</h3>
+      <form (ngSubmit)="saveEdit(local.id)" #editForm="ngForm">
+        <label>Nombre:</label>
+        <input type="text" [(ngModel)]="editData.name" name="name" required>
+
+        <label>Ubicación:</label>
+        <input type="text" [(ngModel)]="editData.ubication" name="ubication" required>
+
+        <label>Latitud:</label>
+        <input type="number" [(ngModel)]="editData.latitude" name="latitude" step="0.0001">
+
+        <label>Longitud:</label>
+        <input type="number" [(ngModel)]="editData.longitude" name="longitude" step="0.0001">
+
+        <label>Capacidad:</label>
+        <input type="number" [(ngModel)]="editData.capacity" name="capacity" min="1" required>
+
+        <label>Salas:</label>
+        <input type="number" [(ngModel)]="editData.rooms" name="rooms" min="1" required>
+
+        <div class="edit-actions">
+          <button type="submit" [disabled]="!editForm.valid">Guardar</button>
+          <button type="button" (click)="cancelEdit()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <p *ngIf="locals.length === 0">No hay locales para mostrar.</p>
+</div>

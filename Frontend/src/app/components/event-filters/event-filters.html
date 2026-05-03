@@ -1,0 +1,29 @@
+<div class="filters-container">
+  <div class="filters-bar">
+    <div class="filter-group">
+      <label for="category">Categoria:</label>
+      <select id="category" [(ngModel)]="category" (change)="applyFilters()">
+        <option value="">Totes</option>
+        <option value="MUSICA">Música</option>
+        <option value="ESPORT">Esport</option>
+        <option value="CULTURA">Cultura</option>
+        <option value="ALTRES">Altres</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="date">Data:</label>
+      <input type="date" id="date" [(ngModel)]="date" (change)="applyFilters()">
+    </div>
+
+    <div class="filter-group">
+      <label for="search">Cerca:</label>
+      <input type="text" id="search" [(ngModel)]="search" placeholder="Cerca per nom o descripció..." (keyup.enter)="applyFilters()">
+    </div>
+
+    <div class="filter-actions">
+      <button class="btn-filter" (click)="applyFilters()">Filtrar</button>
+      <button class="btn-reset" (click)="resetFilters()">Netejar filtres</button>
+    </div>
+  </div>
+</div>

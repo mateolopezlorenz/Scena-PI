@@ -1,0 +1,86 @@
+<div class="container-fluid p-0">
+  <h1>Crear Evento</h1>
+  <form (ngSubmit)="onSubmit()" #eventForm="ngForm" class="form">
+    <label for="name">Nombre del Evento:</label>
+    <input type="text" id="name" name="name" [(ngModel)]="eventData.name" #nameField="ngModel" required minlength="2">
+    <div *ngIf="nameField.invalid && nameField.touched" class="error-msg">
+      <span *ngIf="nameField.errors?.['required']">El nombre es obligatorio.</span>
+      <span *ngIf="nameField.errors?.['minlength']">Mínimo 2 caracteres.</span>
+    </div>
+
+    <label for="description">Descripción:</label>
+    <input type="text" id="description" name="description" [(ngModel)]="eventData.description" #descField="ngModel" required>
+    <div *ngIf="descField.invalid && descField.touched" class="error-msg">
+      <span *ngIf="descField.errors?.['required']">La descripción es obligatoria.</span>
+    </div>
+
+    <label for="category">Categoría:</label>
+    <select id="category" name="category" [(ngModel)]="eventData.category" #catField="ngModel" required>
+      <option value="">Selecciona una categoría</option>
+      <option value="MUSICA">Música</option>
+      <option value="ESPORT">Esport</option>
+      <option value="CULTURA">Cultura</option>
+      <option value="ALTRES">Altres</option>
+    </select>
+    <div *ngIf="catField.invalid && catField.touched" class="error-msg">
+      <span>Selecciona una categoría.</span>
+    </div>
+
+    <label for="status">Estado:</label>
+    <select name="status" id="status" [(ngModel)]="eventData.status" required>
+      <option value="">Selecciona</option>
+      <option value="PLANEADO">Planeado</option>
+      <option value="EN CURSO">En curso</option>
+      <option value="FINALIZADO">Finalizado</option>
+    </select>
+
+    <label for="startDate">Fecha de inicio:</label>
+    <input type="datetime-local" id="startDate" name="startDate" [(ngModel)]="eventData.startDate" #startField="ngModel" required>
+    <div *ngIf="startField.invalid && startField.touched" class="error-msg">
+      <span>La fecha de inicio es obligatoria.</span>
+    </div>
+
+    <label for="endDate">Fecha de fin:</label>
+    <input type="datetime-local" id="endDate" name="endDate" [(ngModel)]="eventData.endDate" #endField="ngModel" required>
+    <div *ngIf="endField.invalid && endField.touched" class="error-msg">
+      <span>La fecha de fin es obligatoria.</span>
+    </div>
+    <div *ngIf="eventData.startDate && eventData.endDate && eventData.endDate < eventData.startDate" class="error-msg">
+      La fecha de fin debe ser posterior a la fecha de inicio.
+    </div>
+
+    <label for="local">Asociar a un Local (opcional):</label>
+    <select id="local" name="localId" [(ngModel)]="eventData.localId" (change)="onLocalSelected()">
+      <option [ngValue]="null">-- Sin local --</option>
+      <option *ngFor="let local of locals" [ngValue]="local.id">{{ local.name }} - {{ local.ubication }}</option>
+    </select>
+
+    <label for="latitude">Latitud:</label>
+    <input type="number" id="latitude" name="latitude" [(ngModel)]="eventData.latitude" #latField="ngModel" min="-90" max="90" step="0.0001" required>
+    <div *ngIf="latField.invalid && latField.touched" class="error-msg">
+      <span>La latitud es obligatoria (-90 a 90).</span>
+    </div>
+
+    <label for="longitude">Longitud:</label>
+    <input type="number" id="longitude" name="longitude" [(ngModel)]="eventData.longitude" #lngField="ngModel" min="-180" max="180" step="0.0001" required>
+    <div *ngIf="lngField.invalid && lngField.touched" class="error-msg">
+      <span>La longitud es obligatoria (-180 a 180).</span>
+    </div>
+
+    <button type="button" (click)="showMapSelector = !showMapSelector" style="margin: 10px 0;">
+      {{ showMapSelector ? 'Ocultar Mapa' : 'Seleccionar en Mapa' }}
+    </button>
+
+    <div *ngIf="showMapSelector" style="width:100%;height:400px;margin:15px 0;border:1px solid #333;">
+      <app-map-view [isInteractive]="true" (coordinatesSelected)="onCoordinatesSelected($event)"></app-map-view>
+    </div>
+
+    <label for="address">Dirección:</label>
+    <input type="text" id="address" name="address" [(ngModel)]="eventData.address" #addrField="ngModel" required>
+    <div *ngIf="addrField.invalid && addrField.touched" class="error-msg">
+      <span>La dirección es obligatoria.</span>
+    </div>
+
+    <button type="submit" [disabled]="!eventForm.form.valid || (eventData.startDate && eventData.endDate && eventData.endDate < eventData.startDate)">Crear Evento</button>
+  </form>
+</div>

@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+
+  #Base de datos PostgreSQL.
+  db:
+    build: ./Database
+    image: scena-db:latest
+    container_name: scena_postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: scena_user
+      POSTGRES_PASSWORD: scena_pass
+      POSTGRES_DB: scena_db
+    volumes:
+      - scena_data:/var/lib/postgresql/data
+
+
+  #Servidor de aplicación.
+  app:
+    build:
+      context: ..
+      dockerfile: Docker/App/Dockerfile
+    image: scena-app:latest
+    container_name: scena_app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/scena_db
+      SPRING_DATASOURCE_USERNAME: scena_user
+      SPRING_DATASOURCE_PASSWORD: scena_pass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+volumes:
+  scena_data:

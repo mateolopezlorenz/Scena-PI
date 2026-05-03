@@ -1,0 +1,86 @@
+:host {
+  display: block;
+  width: 100%;
+  max-width: 1100px;
+  margin: 10px auto;
+  padding: 0 15px;
+}
+
+.navbar {
+  background-color: #1a1a1a;
+  border-radius: 50px;
+  padding: 10px 20px;
+  border: 1px solid #333;
+}
+
+.navbar-brand {
+  font-size: 1.2rem;
+  color: #D4A843 !important;
+}
+
+.navbar-toggler {
+  background: none !important;
+  border: none !important;
+  padding: 6px !important;
+  box-shadow: none !important;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.toggler-bar {
+  display: block;
+  width: 22px;
+  height: 2.5px;
+  background: #D4A843;
+  border-radius: 2px;
+}
+
+@media (max-width: 767.98px) {
+  :host {
+    padding: 0;
+    margin: 0;
+  }
+  .navbar {
+    border-radius: 0;
+    border: none;
+  }
+  .navbar-collapse {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease;
+    &.show { max-height: 500px; }
+  }
+  .navbar-nav {
+    padding: 10px 0;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn-nav {
+    text-align: center;
+    width: 100%;
+  }
+}
+
+.btn-nav {
+  background-color: #D4A843;
+  color: #111;
+  font-weight: 600;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 18px;
+  text-decoration: none;
+  &:hover {
+    background-color: #f0cc6b;
+    color: #111;
+  }
+}
+
+.btn-logout {
+  background-color: #444;
+  color: #E8E8E8;
+
+  &:hover {
+    background-color: #555;
+    color: #fff;
+  }
+}

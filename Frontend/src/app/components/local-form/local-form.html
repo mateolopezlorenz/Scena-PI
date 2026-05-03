@@ -1,0 +1,30 @@
+<div class="container-local">
+  <h2>Crear Local</h2>
+  <form (ngSubmit)="onSubmit()" #localForm="ngForm">
+    <label>Nombre:</label>
+    <input type="text" [(ngModel)]="localData.name" name="name" required>
+    <br>
+
+    <label>Latitud:</label>
+    <input type="number" [(ngModel)]="localData.latitude" name="latitude">
+    <br>  
+
+    <label>Longitud:</label>
+    <input type="number" [(ngModel)]="localData.longitude" name="longitude">
+    <br>
+    
+    <label>Ubicación:</label>
+    <input type="text" [(ngModel)]="localData.ubication" name="ubication" required>
+    <br>
+
+    <label>Capacidad:</label>
+    <input type="number" [(ngModel)]="localData.capacity" name="capacity" required min="1">
+    <br>
+
+    <label>Salas:</label>
+    <input type="number" [(ngModel)]="localData.rooms" name="rooms" required min="1">
+    <br>
+
+    <button type="submit" [disabled]="!localForm.valid">Crear Local</button>
+  </form>
+</div>

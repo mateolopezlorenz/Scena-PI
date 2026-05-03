@@ -1,0 +1,31 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.event-detail-info {
+  p { margin: 0.4rem 0; }
+  strong { color: #D4A843; }
+}
+
+.event-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.event-delete-confirm {
+  p { color: #C0C0C0; }
+}
+
+.event-edit-form {
+  width: 100%;
+}
+
+@media (max-width: 576px) {
+  .event-detail-actions {
+    flex-direction: column;
+    button { width: 100%; }
+  }
+}

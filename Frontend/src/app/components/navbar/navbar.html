@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-md w-100 rounded-pill px-3 py-2 mb-3">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+
+    <a class="navbar-brand fw-bold" routerLink="/event-list">Scena</a>
+
+    <button class="navbar-toggler" type="button" (click)="toggleMenu()" [attr.aria-expanded]="isMenuOpen">
+      <span class="toggler-bar"></span>
+      <span class="toggler-bar"></span>
+      <span class="toggler-bar"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" [class.show]="isMenuOpen">
+      <div class="navbar-nav ms-auto d-flex flex-wrap gap-2 justify-content-center align-items-center">
+        <span *ngIf="username" class="navbar-text fw-bold me-2" style="color:#D4A843">Hola, {{ username }}</span>
+
+        <a *ngIf="!username" routerLink="/register" class="btn btn-nav">Crear sesión</a>
+        <a *ngIf="!username" routerLink="/login" class="btn btn-nav">Iniciar sesión</a>
+        <a *ngIf="username" routerLink="/event" class="btn btn-nav">Crear evento</a>
+        <a *ngIf="username" routerLink="/local" class="btn btn-nav">Crear local</a>
+        <a routerLink="/local-list" class="btn btn-nav">Ver locales</a>
+        <a routerLink="/event-list" class="btn btn-nav">Ver eventos</a>
+        <a *ngIf="username" routerLink="/user-likes" class="btn btn-nav">Mis MG</a>
+
+        <button *ngIf="username" (click)="logout()" class="btn btn-nav btn-logout">Logout</button>
+      </div>
+    </div>
+
+  </div>
+</nav>
