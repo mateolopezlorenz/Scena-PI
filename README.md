@@ -49,11 +49,14 @@ El proyecto se encuentra actualmente en fase de desarrollo, con la estructura ba
 ---
 
 ## Estructura del proyecto
+
+```
 Backend/
 Frontend/
 docs/
 LICENSE
 README.md
+```
 
 ---
 
